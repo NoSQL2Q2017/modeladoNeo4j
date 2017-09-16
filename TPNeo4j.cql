@@ -14,3 +14,24 @@ CREATE
  (AG:   Materia { nombre: "Administracion Gerencial", electiva: false } } ),
  (SO:   Materia { nombre: "Sistemas Operativos", electiva: false } } ),
  (TADP: Materia { nombre: "Tecnicas Avanzadas de Programacion", electiva: true } );
+ 
+MATCH (Gus:  Alumno { apellido: "Crespi"}),    (d: Materia { nombre: "Diseño de Sistemas"} ),
+      (Juan: Alumno { apellido: "Rios"}),      (tadp: Materia { nombre: "Tecnicas Avanzadas de Programacion"} ),
+      (Gas:  Alumno { apellido: "Santoalla"}), (gco: Materia { nombre: "Gestion del Cambio Organizacional" } ),
+      (R:    Alumno { apellido: "Vazquez"}),   (pdep: Materia { nombre: "Paradigmas de Programacion"} ),
+      (gdd: Materia { nombre: "Gestion de Datos"} ), (ag: Materia { nombre: "Administracion Gerencial"} ),
+      (Jfds: Alumno { apellido: "Fernandes dos Santos"}), (so: Materia { nombre: "Sistemas Operativos"} ),
+      (aed: Materia { nombre: "Algoritmos y Estructura de Datos"} ),
+CREATE 
+ (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R), (Gus)-[:Conoce ]->(Jfds), 
+ (Juan)-[:Conoce ]->(Gas), (Juan)-[:Conoce ]->(R), (Juan)-[:Conoce ]->(Jfds), 
+ (Gas)-[:Conoce ]->(R), (Gas)-[:Conoce ]->(Jfds), 
+ (R)-[:Conoce ]->(Jfds),
+ (Juan)-[:Dicto ]->(pdep), (Juan)-[:Dicto ]->(dds),
+ (Gus)-[:Dicto ]->(pdep), (Juan)-[:Dicto ]->(dds),
+ (Jfds)-[:Dicto ]->(pdep), (Juan)-[:Dicto ]->(tadp),
+ (Gas)-[:Dicto ]->(pdep), (Juan)-[:Dicto ]->(aed),
+ //TODO Relacion Formo Grupo con
+ //TODO Relacion Curso
+ 
+ //Las relaciones como conoce deberian ser birideccionales, como esto no se puede en Neo4J se las crea con una direccion arbitraria para luego querearlas como MATCH (a1)-[:CONOCE]-(a2)
