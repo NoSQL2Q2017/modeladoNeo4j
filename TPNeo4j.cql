@@ -95,6 +95,11 @@ CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R),
  //Queries
  //1
  //2
+MATCH (d: Docente)-[di:Dicto ]->(m: Materia)
+WITH d as docente, count(di) as materias
+WHERE materias > 1
+RETURN docente
+
  //3
  //4
  //5
