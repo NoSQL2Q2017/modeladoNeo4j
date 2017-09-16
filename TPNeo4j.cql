@@ -101,6 +101,15 @@ WHERE materias > 1
 RETURN docente
 
  //3
+ //Of an specific student
+ MATCH (a: Alumno)-[c: Curso]->()
+ WHERE a.legajo = 1493243
+ RETURN toFloat(sum(c.nota))/count(c) as promedio
+ 
+ //Of all students
+ MATCH (a: Alumno)-[c: Curso]->()
+ RETURN a, toFloat(sum(c.nota))/count(c) as promedio
+
  //4
  //5
  //6
