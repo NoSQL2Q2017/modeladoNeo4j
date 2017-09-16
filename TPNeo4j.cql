@@ -31,7 +31,29 @@ CREATE
  (Gus)-[:Dicto ]->(pdep), (Juan)-[:Dicto ]->(dds),
  (Jfds)-[:Dicto ]->(pdep), (Juan)-[:Dicto ]->(tadp),
  (Gas)-[:Dicto ]->(pdep), (Juan)-[:Dicto ]->(aed),
- //TODO Relacion Formo Grupo con
+ (Gas)-[:FormoGrupoCon { materia: "Paradigmas de Programacion" } ]->(Jfds), 
+ (Gas)-[:FormoGrupoCon { materia: "Paradigmas de Programacion" } ]->(Juan),
+ (Juan)-[:FormoGrupoCon { materia: "Paradigmas de Programacion" } ]->(Jfds),
+ (Gas)-[:FormoGrupoCon { materia: "Tecnicas Avanzadas de Programacion" } ]->(Jfds),
+ (Gas)-[:FormoGrupoCon { materia: "Tecnicas Avanzadas de Programacion" } ]->(Gus),
+ (Gus)-[:FormoGrupoCon { materia: "Tecnicas Avanzadas de Programacion" } ]->(Jfds),
+ (R)-[:FormoGrupoCon { materia: "Tecnicas Avanzadas de Programacion" } ]->(Juan),
+ (R)-[:FormoGrupoCon { materia: "Sistemas Operativos" } ]->(Juan),
+ (R)-[:FormoGrupoCon { materia: "Sistemas Operativos" } ]->(Jfds),
+ (Jfds)-[:FormoGrupoCon { materia: "Sistemas Operativos" } ]->(Juan),
+ (Gas)-[:FormoGrupoCon { materia: "Gestion de Datos" } ]->(Jfds),
+ (Gas)-[:FormoGrupoCon { materia: "Gestion de Datos" } ]->(Juan),
+ (Gas)-[:FormoGrupoCon { materia: "Gestion de Datos" } ]->(R),
+ (Juan)-[:FormoGrupoCon { materia: "Gestion de Datos" } ]->(Jfds),
+ (Juan)-[:FormoGrupoCon { materia: "Gestion de Datos" } ]->(R),
+ (R)-[:FormoGrupoCon { materia: "Gestion de Datos" } ]->(Jfds),
+ (Gas)-[:FormoGrupoCon { materia: "Diseño de Sistemas" } ]->(Juan),
+ (Gas)-[:FormoGrupoCon { materia: "Diseño de Sistemas" } ]->(Gus),
+ (Gas)-[:FormoGrupoCon { materia: "Diseño de Sistemas" } ]->(R),
+ (R)-[:FormoGrupoCon { materia: "Diseño de Sistemas" } ]->(Juan),
+ (Gas)-[:FormoGrupoCon { materia: "Diseño de Sistemas" } ]->(Gus),
+ (Gus)-[:FormoGrupoCon { materia: "Diseño de Sistemas" } ]->(Juan),
+
  //TODO Relacion Curso
  
- //Las relaciones como conoce deberian ser birideccionales, como esto no se puede en Neo4J se las crea con una direccion arbitraria para luego querearlas como MATCH (a1)-[:CONOCE]-(a2)
+ //Las relaciones como Conoce o FormoGrupoCon deberian ser birideccionales, como esto no se puede en Neo4J se las crea con una direccion arbitraria para luego querearlas como MATCH (a1)-[:CONOCE]-(a2)
