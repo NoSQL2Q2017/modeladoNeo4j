@@ -1,3 +1,4 @@
+//Node Creations
 CREATE 
  (Gu: Alumno:Docente { apellido: "Crespi", nombre: "Gustavo", legajo: 1491696 } ),
  (H: Alumno:Docente { apellido: "Fernandes dos Santos", nombre: "Juan", legajo: 1491738  } ),
@@ -13,6 +14,7 @@ CREATE
  (SO:   Materia { nombre: "Sistemas Operativos", electiva: false } ),
  (TADP: Materia { nombre: "Tecnicas Avanzadas de Programacion", electiva: true } );
  
+//Relationship Creations
 MATCH (Gus:  Alumno { apellido: "Crespi"}),    (dds: Materia { nombre: "Diseño de Sistemas"} ),
       (Juan: Alumno { apellido: "Rios"}),      (tadp: Materia { nombre: "Tecnicas Avanzadas de Programacion"} ),
       (Gas:  Alumno { apellido: "Santoalla"}), (crip: Materia { nombre: "Criptografia" } ),
@@ -89,5 +91,14 @@ CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R),
  (R)-[:Curso { nroCurso: "K3013", ano: 2015, cuatrimestre: "2C", nota: 0 } ]->(so),
  (R)-[:Curso { nroCurso: "K1025", ano: 2013, cuatrimestre: "A", nota: 0 } ]->(aed),
  (R)-[:Curso { nroCurso: "K3022", ano: 2015, cuatrimestre: "2C", nota: 0 } ]->(gdd)
- 
- //Las relaciones como Conoce o FormoGrupoCon deberian ser birideccionales, como esto no se puede en Neo4J se las crea con una direccion arbitraria para luego querearlas como MATCH (a1)-[:CONOCE]-(a2)
+
+ //Queries
+ //1
+ //2
+ //3
+ //4
+ //5
+ //6
+ //7
+ //8
+ //9
