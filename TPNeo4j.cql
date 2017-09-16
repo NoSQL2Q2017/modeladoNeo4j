@@ -111,7 +111,21 @@ RETURN docente
  RETURN a, toFloat(sum(c.nota))/count(c) as promedio
 
  //4
+
  //5
+ //Without WHERE gets from all students as previous query
+ //Long 2
+ MATCH (a: Alumno)-[:Conoce*2]->(b), (b)-[:Conoce]->(c)
+ WHERE a <> b
+ AND a.legajo = 1493243
+ RETURN DISTINCT b
+ 
+ //Infinite
+ MATCH (a: Alumno)-[:Conoce*]->(b), (b)-[:Conoce]->(c)
+ WHERE a <> b
+ AND a.legajo = 1493243
+ RETURN DISTINCT b
+ 
  //6
  //7
  //8
