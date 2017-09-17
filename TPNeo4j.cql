@@ -143,4 +143,10 @@ RETURN docente
  RETURN e
 
  //8
+ MATCH (a1: Alumno { legajo: 1493243 } )-[:Conoce*]-(a2: Alumno), (e: Materia { electiva: true } ), (a2)-[:Curso]-(m: Materia)
+ WHERE a1 <> a2
+ AND NOT (a1)-[:Curso]-(e)
+ AND (a1)-[:Curso]-(m)
+ RETURN e
+
  //9
