@@ -12,6 +12,7 @@ CREATE
  (PDEP: Materia { nombre: "Paradigmas de Programacion", electiva: false } ),
  (AG:   Materia { nombre: "Administracion Gerencial", electiva: false } ),
  (SO:   Materia { nombre: "Sistemas Operativos", electiva: false } ),
+ (ADP:   Materia { nombre: "Administracion de Personal", electiva: true } ),
  (TADP: Materia { nombre: "Tecnicas Avanzadas de Programacion", electiva: true } );
  
 //Relationship Creations
@@ -21,7 +22,7 @@ MATCH (Gus:  Alumno { legajo: 1491696 } ),    (dds: Materia { nombre: "Diseño d
       (R:    Alumno { legajo: 1491611 } ),   (pdep: Materia { nombre: "Paradigmas de Programacion"} ),
       (gdd: Materia { nombre: "Gestion de Datos" } ), (ag: Materia { nombre: "Administracion Gerencial"} ),
       (Jfds: Alumno { legajo: 1491738 } ), (so: Materia { nombre: "Sistemas Operativos"} ),
-      (aed: Materia { nombre: "Algoritmos y Estructura de Datos"} )
+      (aed: Materia { nombre: "Algoritmos y Estructura de Datos"} ), (adp: Materia { nombre: "Administracion de Personal"} )
 CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R), (Gus)-[:Conoce ]->(Jfds), 
  (Juan)-[:Conoce ]->(Gas), (Juan)-[:Conoce ]->(R), (Juan)-[:Conoce ]->(Jfds), 
  (Gas)-[:Conoce ]->(R), (Gas)-[:Conoce ]->(Jfds), 
@@ -84,6 +85,7 @@ CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R),
  (Gus)-[:Curso { nroCurso: "K3053", ano: 2015, cuatrimestre: "2C", nota: 0 } ]->(so),
  (Gus)-[:Curso { nroCurso: "K1025", ano: 2013, cuatrimestre: "A", nota: 0 } ]->(aed),
  (Gus)-[:Curso { nroCurso: "K3022", ano: 2015, cuatrimestre: "2C", nota: 0 } ]->(gdd),
+ (Gus)-[:Curso { nroCurso: "K0000", ano: 2016, cuatrimestre: "2C", nota: 0 } ]->(adp),
  (R)-[:Curso { nroCurso: "K3001", ano: 2015, cuatrimestre: "A", nota: 0 } ]->(dds),
  (R)-[:Curso { nroCurso: "K3021", ano: 2015, cuatrimestre: "2C", nota: 0 } ]->(tadp),
  (R)-[:Curso { nroCurso: "K2001", ano: 2014, cuatrimestre: "A", nota: 0 } ]->(pdep),
