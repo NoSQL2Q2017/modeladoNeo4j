@@ -130,6 +130,9 @@ RETURN docente
  RETURN DISTINCT b
  
  //6
+ MATCH (a: Alumno: Docente)
+ RETURN DISTINCT a.nombre, a.apellido
+
  //7
  //8
  //9
