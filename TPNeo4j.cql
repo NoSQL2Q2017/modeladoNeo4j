@@ -15,12 +15,12 @@ CREATE
  (TADP: Materia { nombre: "Tecnicas Avanzadas de Programacion", electiva: true } );
  
 //Relationship Creations
-MATCH (Gus:  Alumno { apellido: "Crespi"}),    (dds: Materia { nombre: "Diseño de Sistemas"} ),
-      (Juan: Alumno { apellido: "Rios"}),      (tadp: Materia { nombre: "Tecnicas Avanzadas de Programacion"} ),
-      (Gas:  Alumno { apellido: "Santoalla"}), (crip: Materia { nombre: "Criptografia" } ),
-      (R:    Alumno { apellido: "Vazquez"}),   (pdep: Materia { nombre: "Paradigmas de Programacion"} ),
-      (gdd: Materia { nombre: "Gestion de Datos"} ), (ag: Materia { nombre: "Administracion Gerencial"} ),
-      (Jfds: Alumno { apellido: "Fernandes dos Santos"}), (so: Materia { nombre: "Sistemas Operativos"} ),
+MATCH (Gus:  Alumno { legajo: 1491696 } ),    (dds: Materia { nombre: "Diseño de Sistemas"} ),
+      (Juan: Alumno { legajo: 1493346 } ),      (tadp: Materia { nombre: "Tecnicas Avanzadas de Programacion"} ),
+      (Gas:  Alumno { legajo: 1493243 } ), (crip: Materia { nombre: "Criptografia" } ),
+      (R:    Alumno { legajo: 1491611 } ),   (pdep: Materia { nombre: "Paradigmas de Programacion"} ),
+      (gdd: Materia { nombre: "Gestion de Datos" } ), (ag: Materia { nombre: "Administracion Gerencial"} ),
+      (Jfds: Alumno { legajo: 1491738 } ), (so: Materia { nombre: "Sistemas Operativos"} ),
       (aed: Materia { nombre: "Algoritmos y Estructura de Datos"} )
 CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R), (Gus)-[:Conoce ]->(Jfds), 
  (Juan)-[:Conoce ]->(Gas), (Juan)-[:Conoce ]->(R), (Juan)-[:Conoce ]->(Jfds), 
@@ -102,15 +102,14 @@ RETURN docente
 
  //3
  //Of an specific student
- MATCH (a: Alumno)-[c: Curso]->()
- WHERE a.legajo = 1493243
+ MATCH (a: Alumno { legajo: 1493243 })-[c: Curso]->()
  RETURN toFloat(sum(c.nota))/count(c) as promedio
  
  //Of all students
  MATCH (a: Alumno)-[c: Curso]->()
  RETURN a, toFloat(sum(c.nota))/count(c) as promedio
 
- //4
+ //4 //TODO Add one student who apply to this query
  MATCH (a1: Alumno)-[c1: Curso]->(m: Materia), (a2: Alumno)-[c2: Curso]->(m)
  WHERE c1.nroCurso = c2.nroCurso
  AND c1.ano = c2.ano
@@ -118,18 +117,16 @@ RETURN docente
  AND NOT (a1)-[:Conoce]-(a2)
  RETURN DISTINCT a1, a2
 
- //5
+ //5 //TODO Check this query
  //Without WHERE gets from all students as previous query
  //Long 2
- MATCH (a: Alumno)-[:Conoce*2]->(b), (b)-[:Conoce]->(c)
+ MATCH (a: Alumno { legajo: 1493243 } )-[:Conoce*2]->(b)
  WHERE a <> b
- AND a.legajo = 1493243
  RETURN DISTINCT b
  
  //Infinite
- MATCH (a: Alumno)-[:Conoce*]->(b), (b)-[:Conoce]->(c)
+ MATCH (a: Alumno  { legajo: 1493243 } )-[:Conoce*]->(b), (b)-[:Conoce]->()
  WHERE a <> b
- AND a.legajo = 1493243
  RETURN DISTINCT b
  
  //6
