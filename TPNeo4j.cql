@@ -111,6 +111,12 @@ RETURN docente
  RETURN a, toFloat(sum(c.nota))/count(c) as promedio
 
  //4
+ MATCH (a1: Alumno)-[c1: Curso]->(m: Materia), (a2: Alumno)-[c2: Curso]->(m)
+ WHERE c1.nroCurso = c2.nroCurso
+ AND c1.ano = c2.ano
+ AND c1.cuatrimestre = c2.cuatrimestre
+ AND NOT (a1)-[:Conoce]-(a2)
+ RETURN DISTINCT a1, a2
 
  //5
  //Without WHERE gets from all students as previous query
