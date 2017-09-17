@@ -96,6 +96,15 @@ CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R),
 
  //Queries
  //1
+ MATCH (a1: Alumno)-[c1:Curso]-(m: Materia), (a2: Alumno)-[c2:Curso]-(m), (a1)-[f:FormoGrupoCon]-(b: Alumno)
+ WHERE a1 <> a2
+ AND a2 <> b
+ AND f.materia <> m.nombre
+ AND c1.nroCurso = c2.nroCurso
+ AND c1.ano = c2.ano
+ AND c1.cuatrimestre = c2.cuatrimestre
+ RETURN DISTINCT a1
+
  //2
 MATCH (d: Docente)-[di:Dicto ]->(m: Materia)
 WITH d as docente, count(di) as materias
