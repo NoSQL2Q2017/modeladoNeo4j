@@ -4,6 +4,7 @@ CREATE
  (H: Alumno:Docente { apellido: "Fernandes dos Santos", nombre: "Juan", legajo: 1491738  } ),
  (J: Alumno:Docente { apellido: "Rios", nombre: "Juan", legajo: 1493346 } ),
  (G: Alumno:Docente { apellido: "Santoalla", nombre: "Gaston", legajo: 1493243 } ),
+ (HURLEY: Alumno:Docente { apellido: "Reyes", nombre: "Hugo", legajo: 1324567 } ),
  (R: Alumno { apellido: "Vazquez", nombre: "Ramiro", legajo: 1491611 } ),
  (AED:  Materia { nombre: "Algoritmos y Estructura de Datos", electiva: false } ),
  (DDS:  Materia { nombre: "Diseño de Sistemas", electiva: false } ),
@@ -22,7 +23,8 @@ MATCH (Gus:  Alumno { legajo: 1491696 } ),    (dds: Materia { nombre: "Diseño d
       (R:    Alumno { legajo: 1491611 } ),   (pdep: Materia { nombre: "Paradigmas de Programacion"} ),
       (gdd: Materia { nombre: "Gestion de Datos" } ), (ag: Materia { nombre: "Administracion Gerencial"} ),
       (Jfds: Alumno { legajo: 1491738 } ), (so: Materia { nombre: "Sistemas Operativos"} ),
-      (aed: Materia { nombre: "Algoritmos y Estructura de Datos"} ), (adp: Materia { nombre: "Administracion de Personal"} )
+      (aed: Materia { nombre: "Algoritmos y Estructura de Datos"} ), (adp: Materia { nombre: "Administracion de Personal"} ),
+      (hurley: Alumno { legajo: 1324567 } )
 CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R), (Gus)-[:Conoce ]->(Jfds), 
  (Juan)-[:Conoce ]->(Gas), (Juan)-[:Conoce ]->(R), (Juan)-[:Conoce ]->(Jfds), 
  (Gas)-[:Conoce ]->(R), (Gas)-[:Conoce ]->(Jfds), 
@@ -78,6 +80,7 @@ CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R),
  (Jfds)-[:Curso { nroCurso: "K1025", ano: 2013, cuatrimestre: "A", nota: 9 } ]->(aed),
  (Jfds)-[:Curso { nroCurso: "K3022", ano: 2015, cuatrimestre: "2C", nota: 10 } ]->(gdd),
  (Jfds)-[:Curso { nroCurso: "K4071", ano: 2016, cuatrimestre: "2C", nota: 10 } ]->(crip),
+ (hurley)-[:Curso { nroCurso: "K4071", ano: 2016, cuatrimestre: "2C", nota: 9 } ]->(crip),
  (Gus)-[:Curso { nroCurso: "K3001", ano: 2015, cuatrimestre: "A", nota: 8 } ]->(dds),
  (Gus)-[:Curso { nroCurso: "K3021", ano: 2015, cuatrimestre: "2C", nota: 10 } ]->(tadp),
  (Gus)-[:Curso { nroCurso: "K2005", ano: 2014, cuatrimestre: "A", nota: 10 } ]->(pdep),
@@ -122,13 +125,12 @@ RETURN docente
  RETURN a, toFloat(sum(c.nota))/count(c) as promedio
 
  //4. Listado para recomendación de alumnos que cursaron en el mismo curso y cuatrimestre pero no se conocen entre sí.
- //TODO Add one student who apply to this query 
  MATCH (a1: Alumno)-[c1: Curso]->(m: Materia), (a2: Alumno)-[c2: Curso]->(m)
  WHERE c1.nroCurso = c2.nroCurso
  AND c1.ano = c2.ano
  AND c1.cuatrimestre = c2.cuatrimestre
  AND NOT (a1)-[:Conoce]-(a2)
- RETURN DISTINCT a1, a2
+ RETURN a1, collect(a2)
 
  //5. Listado de los conocidos de tus conocidos, hasta longitud 2, e indefinida.
  //TODO Check this query
