@@ -6,6 +6,8 @@ CREATE
  (G: Alumno:Docente { apellido: "Santoalla", nombre: "Gaston", legajo: 1493243 } ),
  (HURLEY: Alumno:Docente { apellido: "Reyes", nombre: "Hugo", legajo: 1324567 } ),
  (R: Alumno { apellido: "Vazquez", nombre: "Ramiro", legajo: 1491611 } ),
+ (DZN: Alumno { apellido: "Daniel", nombre: "Zinghini", legajo: 1492800 } ),
+ (SRLMP: Alumno { apellido: "Sarlomp", nombre: "Juan", legajo:1330298 } ),
  (AED:  Materia { nombre: "Algoritmos y Estructura de Datos", electiva: false } ),
  (DDS:  Materia { nombre: "Diseño de Sistemas", electiva: false } ),
  (GDD:  Materia { nombre: "Gestion de Datos", electiva: false } ),
@@ -24,11 +26,12 @@ MATCH (Gus:  Alumno { legajo: 1491696 } ),    (dds: Materia { nombre: "Diseño d
       (gdd: Materia { nombre: "Gestion de Datos" } ), (ag: Materia { nombre: "Administracion Gerencial"} ),
       (Jfds: Alumno { legajo: 1491738 } ), (so: Materia { nombre: "Sistemas Operativos"} ),
       (aed: Materia { nombre: "Algoritmos y Estructura de Datos"} ), (adp: Materia { nombre: "Administracion de Personal"} ),
-      (hurley: Alumno { legajo: 1324567 } )
+      (hurley: Alumno { legajo: 1324567 } ), (dzn: Alumno { legajo: 1492800 } ), (srlmp: Alumno { legajo:1330298 } )
 CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R), (Gus)-[:Conoce ]->(Jfds), 
  (Juan)-[:Conoce ]->(Gas), (Juan)-[:Conoce ]->(R), (Juan)-[:Conoce ]->(Jfds), 
  (Gas)-[:Conoce ]->(R), (Gas)-[:Conoce ]->(Jfds), 
  (R)-[:Conoce ]->(Jfds),
+ (Gas)-[:Conoce ]->(dzn), (dzn)-[:Conoce ]->(srlmp),
  (Juan)-[:Dicto ]->(pdep), (Juan)-[:Dicto ]->(dds),
  (Gus)-[:Dicto ]->(pdep), (Gus)-[:Dicto ]->(dds),
  (Jfds)-[:Dicto ]->(pdep), (Jfds)-[:Dicto ]->(tadp),
@@ -133,15 +136,13 @@ RETURN docente
  RETURN a1, collect(a2)
 
  //5. Listado de los conocidos de tus conocidos, hasta longitud 2, e indefinida.
- //TODO Check this query
- //Sin el legajo entre {} se consigue todos los alumnos de manera similar a la query 3
  //Longitud 2
- MATCH (a: Alumno { legajo: 1493243 } )-[:Conoce*2]->(b)
+ MATCH (a: Alumno { legajo: 1493243 } )-[:Conoce*..2]-(b)
  WHERE a <> b
  RETURN DISTINCT b
  
  //Longitud Indenifida
- MATCH (a: Alumno  { legajo: 1493243 } )-[:Conoce*]->(b), (b)-[:Conoce]->()
+ MATCH (a: Alumno  { legajo: 1493243 } )-[:Conoce*]-(b)
  WHERE a <> b
  RETURN DISTINCT b
  
