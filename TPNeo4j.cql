@@ -77,14 +77,13 @@ CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R),
 
  //Consultas
  //1. Listado de alumnos que cursaron materias juntos, pero en esta materia son de distintos grupos.
- MATCH (a1: Alumno)-[c1:Curso]-(m: Materia), (a2: Alumno)-[c2:Curso]-(m), (a1)-[f:FormoGrupoCon]-(b: Alumno)
+ MATCH (a1: Alumno)-[c1:Curso]-(m: Materia), (a2: Alumno)-[c2:Curso]-(m)
  WHERE a1 <> a2
- AND a2 <> b
- AND f.materia <> m.nombre
  AND c1.nroCurso = c2.nroCurso
  AND c1.ano = c2.ano
  AND c1.cuatrimestre = c2.cuatrimestre
- RETURN DISTINCT a1
+ AND c1.grupo <> c2.grupo
+ RETURN m.nombre, collect(a1), collect(a2)
 
 
  //2. Listado de docentes que dictaron más de una materia.
