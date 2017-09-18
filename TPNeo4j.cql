@@ -124,6 +124,10 @@ RETURN docente
  MATCH (a: Alumno: Docente)
  RETURN DISTINCT a.nombre, a.apellido
 
+//Variante: En vez de tener un nodo Alumno y uno Docente, tener un Nodo Persona que tenga ambas relaciones (curso y dicto)
+MATCH (p: Persona)-[:Curso]-(), (p)-[:Dicto]-()
+return DISTINCT p.nombre, p.apellido
+
  //7. Dado un alumno en particular, recomendación de materias electivas que no haya cursado, en base al criterio de haber sido cursadas por otros alumnos que cursaron por lo menos una en común con él.
  MATCH (a1: Alumno { legajo: 1493243 } )-[:Curso]-(m: Materia), (a2: Alumno)-[:Curso]-(m), (a2)-[:Curso]-(e: Materia { electiva: true } )
  WHERE a1 <> a2
