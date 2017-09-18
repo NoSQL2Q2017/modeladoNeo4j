@@ -145,10 +145,9 @@ RETURN docente
  RETURN DISTINCT a.nombre, a.apellido
 
  //7
- MATCH (a1: Alumno { legajo: 1493243 } ), (e: Materia { electiva: true } ), (a2: Alumno)-[:Curso]-(m: Materia)
+ MATCH (a1: Alumno { legajo: 1493243 } ), (e: Materia { electiva: true } ), (a1: Alumno)-[:Curso]-(m: Materia), (a2)-[:Curso]-(m), (a2)-[:Curso]-(e)
  WHERE a1 <> a2
  AND NOT (a1)-[:Curso]-(e)
- AND (a1)-[:Curso]-(m)
  RETURN e
 
  //8
