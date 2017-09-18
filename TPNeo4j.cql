@@ -4,7 +4,7 @@ CREATE
  (H: Alumno:Docente { apellido: "Fernandes dos Santos", nombre: "Juan", legajo: 1491738  } ),
  (J: Alumno:Docente { apellido: "Rios", nombre: "Juan", legajo: 1493346 } ),
  (G: Alumno:Docente { apellido: "Santoalla", nombre: "Gaston", legajo: 1493243 } ),
- (HURLEY: Alumno:Docente { apellido: "Reyes", nombre: "Hugo", legajo: 1324567 } ),
+ (HURLEY: Alumno { apellido: "Reyes", nombre: "Hugo", legajo: 1324567 } ),
  (R: Alumno { apellido: "Vazquez", nombre: "Ramiro", legajo: 1491611 } ),
  (DZN: Alumno { apellido: "Daniel", nombre: "Zinghini", legajo: 1492800 } ),
  (SRLMP: Alumno { apellido: "Sarlomp", nombre: "Juan", legajo:1330298 } ),
