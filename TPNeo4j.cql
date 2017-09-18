@@ -1,4 +1,4 @@
-//Node Creations
+//Creacion de Nodos
 CREATE 
  (Gu: Alumno:Docente { apellido: "Crespi", nombre: "Gustavo", legajo: 1491696 } ),
  (H: Alumno:Docente { apellido: "Fernandes dos Santos", nombre: "Juan", legajo: 1491738  } ),
@@ -15,7 +15,7 @@ CREATE
  (ADP:   Materia { nombre: "Administracion de Personal", electiva: true } ),
  (TADP: Materia { nombre: "Tecnicas Avanzadas de Programacion", electiva: true } );
  
-//Relationship Creations
+//Creacion de Relaciones
 MATCH (Gus:  Alumno { legajo: 1491696 } ),    (dds: Materia { nombre: "Diseño de Sistemas"} ),
       (Juan: Alumno { legajo: 1493346 } ),      (tadp: Materia { nombre: "Tecnicas Avanzadas de Programacion"} ),
       (Gas:  Alumno { legajo: 1493243 } ), (crip: Materia { nombre: "Criptografia" } ),
@@ -94,8 +94,8 @@ CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R),
  (R)-[:Curso { nroCurso: "K1025", ano: 2013, cuatrimestre: "A", nota: 10 } ]->(aed),
  (R)-[:Curso { nroCurso: "K3022", ano: 2015, cuatrimestre: "2C", nota: 7 } ]->(gdd)
 
- //Queries
- //1
+ //Consultas
+ //1. Listado de alumnos que cursaron materias juntos, pero en esta materia son de distintos grupos.
  MATCH (a1: Alumno)-[c1:Curso]-(m: Materia), (a2: Alumno)-[c2:Curso]-(m), (a1)-[f:FormoGrupoCon]-(b: Alumno)
  WHERE a1 <> a2
  AND a2 <> b
@@ -105,22 +105,24 @@ CREATE (Gus)-[:Conoce ]->(Juan), (Gus)-[:Conoce ]->(Gas), (Gus)-[:Conoce ]->(R),
  AND c1.cuatrimestre = c2.cuatrimestre
  RETURN DISTINCT a1
 
- //2
+
+ //2. Listado de docentes que dictaron más de una materia.
 MATCH (d: Docente)-[di:Dicto ]->(m: Materia)
 WITH d as docente, count(di) as materias
 WHERE materias > 1
 RETURN docente
 
- //3
- //Of an specific student
+ //3. Tu propio promedio de calificaciones.
+ //De un alumno especifico
  MATCH (a: Alumno { legajo: 1493243 })-[c: Curso]->()
  RETURN toFloat(sum(c.nota))/count(c) as promedio
  
- //Of all students
+ //De todos los alumnos
  MATCH (a: Alumno)-[c: Curso]->()
  RETURN a, toFloat(sum(c.nota))/count(c) as promedio
 
- //4 //TODO Add one student who apply to this query
+ //4. Listado para recomendación de alumnos que cursaron en el mismo curso y cuatrimestre pero no se conocen entre sí.
+ //TODO Add one student who apply to this query 
  MATCH (a1: Alumno)-[c1: Curso]->(m: Materia), (a2: Alumno)-[c2: Curso]->(m)
  WHERE c1.nroCurso = c2.nroCurso
  AND c1.ano = c2.ano
@@ -128,33 +130,34 @@ RETURN docente
  AND NOT (a1)-[:Conoce]-(a2)
  RETURN DISTINCT a1, a2
 
- //5 //TODO Check this query
- //Without WHERE gets from all students as previous query
- //Long 2
+ //5. Listado de los conocidos de tus conocidos, hasta longitud 2, e indefinida.
+ //TODO Check this query
+ //Sin el legajo entre {} se consigue todos los alumnos de manera similar a la query 3
+ //Longitud 2
  MATCH (a: Alumno { legajo: 1493243 } )-[:Conoce*2]->(b)
  WHERE a <> b
  RETURN DISTINCT b
  
- //Infinite
+ //Longitud Indenifida
  MATCH (a: Alumno  { legajo: 1493243 } )-[:Conoce*]->(b), (b)-[:Conoce]->()
  WHERE a <> b
  RETURN DISTINCT b
  
- //6
+ //6. Apellido y nombre de alumnos que también son docentes (ver pedido adicional para esta consulta).
  MATCH (a: Alumno: Docente)
  RETURN DISTINCT a.nombre, a.apellido
 
- //7
+ //7. Dado un alumno en particular, recomendación de materias electivas que no haya cursado, en base al criterio de haber sido cursadas por otros alumnos que cursaron por lo menos una en común con él.
  MATCH (a1: Alumno { legajo: 1493243 } ), (e: Materia { electiva: true } ), (a1: Alumno)-[:Curso]-(m: Materia), (a2)-[:Curso]-(m), (a2)-[:Curso]-(e)
  WHERE a1 <> a2
  AND NOT (a1)-[:Curso]-(e)
  RETURN e
 
- //8
+ //8. Hacer una variante del ítem anterior, recomendando sólo si el otro alumno es un contacto (directo o indirecto).
  MATCH (a1: Alumno { legajo: 1493243 } )-[:Conoce*]-(a2: Alumno), (e: Materia { electiva: true } ), (a2)-[:Curso]-(m: Materia)
  WHERE a1 <> a2
  AND NOT (a1)-[:Curso]-(e)
  AND (a1)-[:Curso]-(m)
  RETURN e
 
- //9
+ //9. Consulta adicional, decidida por el grupo.
