@@ -151,16 +151,15 @@ RETURN docente
  RETURN DISTINCT a.nombre, a.apellido
 
  //7. Dado un alumno en particular, recomendación de materias electivas que no haya cursado, en base al criterio de haber sido cursadas por otros alumnos que cursaron por lo menos una en común con él.
- MATCH (a1: Alumno { legajo: 1493243 } ), (e: Materia { electiva: true } ), (a1: Alumno)-[:Curso]-(m: Materia), (a2)-[:Curso]-(m), (a2)-[:Curso]-(e)
+ MATCH (a1: Alumno { legajo: 1493243 } )-[:Curso]-(m: Materia), (a2: Alumno)-[:Curso]-(m), (a2)-[:Curso]-(e: Materia { electiva: true } )
  WHERE a1 <> a2
  AND NOT (a1)-[:Curso]-(e)
- RETURN e
+ RETURN DISTINCT e
 
  //8. Hacer una variante del ítem anterior, recomendando sólo si el otro alumno es un contacto (directo o indirecto).
- MATCH (a1: Alumno { legajo: 1493243 } )-[:Conoce*]-(a2: Alumno), (e: Materia { electiva: true } ), (a2)-[:Curso]-(m: Materia)
+ MATCH (a1: Alumno { legajo: 1493243 } )-[:Conoce*]-(a2: Alumno), (a1)-[:Curso]-(m: Materia), (a2)-[:Curso]-(m), (a2)-[:Curso]-(e: Materia { electiva: true } )
  WHERE a1 <> a2
  AND NOT (a1)-[:Curso]-(e)
- AND (a1)-[:Curso]-(m)
- RETURN e
+ RETURN DISTINCT e
 
  //9. Consulta adicional, decidida por el grupo.
