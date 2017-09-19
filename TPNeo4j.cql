@@ -141,3 +141,11 @@ return DISTINCT p.nombre, p.apellido
  RETURN DISTINCT e
 
  //9. Consulta adicional, decidida por el grupo.
+ //Listado para recomendación de compañeros de grupo teniendo como criterio que hayan cursado mas de 5 materias juntos.
+MATCH (a1: Alumno)-[c1:Curso]-(m: Materia), (a2: Alumno)-[c2:Curso]-(m)
+ WHERE c1.ano = c2.ano
+ AND c1.cuatrimestre = c2.cuatrimestre
+ AND c1.nroCurso = c2.nroCurso
+ WITH a1, a2, count(c1) as cantMateriasJuntos
+ WHERE cantMateriasJuntos > 5
+ RETURN a1 as Alumno, collect(DISTINCT a2) as Recomendados
