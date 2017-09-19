@@ -98,7 +98,7 @@ RETURN toFloat(sum(c.nota))/count(c) as Promedio
 
 //De todos los alumnos
 MATCH (a:Alumno)-[c:Curso]->()
-RETURN a as Alumno, toFloat(sum(c.nota))/count(c) as Promedio
+RETURN a.apellido as Alumno, toFloat(sum(c.nota))/count(c) as Promedio
 
 //4. Listado para recomendación de alumnos que cursaron en el mismo curso y cuatrimestre pero no se conocen entre sí.
 MATCH (a1:Alumno)-[c1:Curso]->(m:Materia)<-[c2:Curso]-(a2:Alumno)
