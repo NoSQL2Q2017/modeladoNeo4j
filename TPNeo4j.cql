@@ -79,27 +79,26 @@ CREATE (Gus)-[:Conoce]->(Juan), (Gus)-[:Conoce]->(Gas), (Gus)-[:Conoce]->(R), (G
 //Consultas
 //1. Listado de alumnos que cursaron materias juntos, pero en esta materia son de distintos grupos.
 MATCH (a1:Alumno)-[c1:Curso]-(m: Materia), (a2:Alumno)-[c2:Curso]-(m)
-WHERE a1 <> a2
-AND c1.nroCurso = c2.nroCurso
+WHERE c1.nroCurso = c2.nroCurso
 AND c1.ano = c2.ano
 AND c1.cuatrimestre = c2.cuatrimestre
 AND c1.grupo <> c2.grupo
-RETURN m.nombre, collect(a1), collect(a2)
+RETURN m.nombre as Materia, a1 as Alumno, collect(a2) as `Alumnos de otros Grupos`
 
 //2. Listado de docentes que dictaron más de una materia.
 MATCH (d:Docente)-[di:Dicto]->(m:Materia)
-WITH d as docente, count(di) as materias
+WITH d as Docente, count(di) as materias
 WHERE materias > 1
-RETURN docente
+RETURN Docente
 
 //3. Tu propio promedio de calificaciones.
 //De un alumno especifico
 MATCH (a:Alumno { legajo: 1493243 })-[c:Curso]->()
-RETURN toFloat(sum(c.nota))/count(c) as promedio
+RETURN toFloat(sum(c.nota))/count(c) as Promedio
 
 //De todos los alumnos
 MATCH (a:Alumno)-[c:Curso]->()
-RETURN a, toFloat(sum(c.nota))/count(c) as promedio
+RETURN a as Alumno, toFloat(sum(c.nota))/count(c) as Promedio
 
 //4. Listado para recomendación de alumnos que cursaron en el mismo curso y cuatrimestre pero no se conocen entre sí.
 MATCH (a1:Alumno)-[c1:Curso]->(m:Materia), (a2:Alumno)-[c2:Curso]->(m)
@@ -107,18 +106,18 @@ WHERE c1.nroCurso = c2.nroCurso
 AND c1.ano = c2.ano
 AND c1.cuatrimestre = c2.cuatrimestre
 AND NOT (a1)-[:Conoce]-(a2)
-RETURN a1, collect(a2)
+RETURN a1 as Alumno, collect(a2) as Desconocidos
 
 //5. Listado de los conocidos de tus conocidos, hasta longitud 2, e indefinida.
 //Longitud 2
 MATCH (a:Alumno { legajo: 1493243 })-[:Conoce*..2]-(b)
 WHERE a <> b
-RETURN DISTINCT b
+RETURN DISTINCT b as Conocido
 
 //Longitud Indenifida
 MATCH (a:Alumno  { legajo: 1493243 })-[:Conoce*]-(b)
 WHERE a <> b
-RETURN DISTINCT b
+RETURN DISTINCT b as Conocido
 
 //6. Apellido y nombre de alumnos que también son docentes (ver pedido adicional para esta consulta).
 MATCH (a:Alumno:Docente)
@@ -132,13 +131,13 @@ Return DISTINCT p.nombre, p.apellido
 MATCH (a1:Alumno { legajo: 1493243 })-[:Curso]-(m:Materia), (a2:Alumno)-[:Curso]-(m), (a2)-[:Curso]-(e:Materia { electiva: true })
 WHERE a1 <> a2
 AND NOT (a1)-[:Curso]-(e)
-RETURN DISTINCT e
+RETURN DISTINCT e as `Electiva Recomendada`
 
 //8. Hacer una variante del ítem anterior, recomendando sólo si el otro alumno es un contacto (directo o indirecto).
 MATCH (a1:Alumno { legajo: 1493243 })-[:Conoce*]-(a2:Alumno), (a1)-[:Curso]-(m:Materia), (a2)-[:Curso]-(m), (a2)-[:Curso]-(e:Materia { electiva: true })
 WHERE a1 <> a2
 AND NOT (a1)-[:Curso]-(e)
-RETURN DISTINCT e
+RETURN DISTINCT e as `Electiva Recomendada`
 
 //9. Consulta adicional, decidida por el grupo.
 //Listado para recomendación de compañeros de grupo teniendo como criterio que hayan cursado mas de 5 materias juntos.
