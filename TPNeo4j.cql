@@ -78,7 +78,7 @@ CREATE (Gus)-[:Conoce]->(Juan), (Gus)-[:Conoce]->(Gas), (Gus)-[:Conoce]->(R), (G
 
 //Consultas
 //1. Listado de alumnos que cursaron materias juntos, pero en esta materia son de distintos grupos.
-MATCH (a1:Alumno)-[c1:Curso]-(m: Materia), (a2:Alumno)-[c2:Curso]-(m)
+MATCH (a1:Alumno)-[c1:Curso]->(m: Materia)<-[c2:Curso]-(a2:Alumno)
 WHERE c1.nroCurso = c2.nroCurso
 AND c1.ano = c2.ano
 AND c1.cuatrimestre = c2.cuatrimestre
@@ -101,7 +101,7 @@ MATCH (a:Alumno)-[c:Curso]->()
 RETURN a as Alumno, toFloat(sum(c.nota))/count(c) as Promedio
 
 //4. Listado para recomendación de alumnos que cursaron en el mismo curso y cuatrimestre pero no se conocen entre sí.
-MATCH (a1:Alumno)-[c1:Curso]->(m:Materia), (a2:Alumno)-[c2:Curso]->(m)
+MATCH (a1:Alumno)-[c1:Curso]->(m:Materia)<-[c2:Curso]-(a2:Alumno)
 WHERE c1.nroCurso = c2.nroCurso
 AND c1.ano = c2.ano
 AND c1.cuatrimestre = c2.cuatrimestre
@@ -128,18 +128,18 @@ MATCH (p:Persona)-[:Curso]-(), (p)-[:Dicto]-()
 Return DISTINCT p.nombre, p.apellido
 
 //7. Dado un alumno en particular, recomendación de materias electivas que no haya cursado, en base al criterio de haber sido cursadas por otros alumnos que cursaron por lo menos una en común con él.
-MATCH (a1:Alumno { legajo: 1493243 })-[:Curso]-(m:Materia), (a2:Alumno)-[:Curso]-(m), (a2)-[:Curso]-(e:Materia { electiva: true })
+MATCH (a1:Alumno { legajo: 1493243 })-[:Curso]->(m:Materia)<-[:Curso]-(a2:Alumno), (a2)-[:Curso]->(e:Materia { electiva: true })
 WHERE NOT (a1)-[:Curso]-(e)
 RETURN DISTINCT e as `Electiva Recomendada`
 
 //8. Hacer una variante del ítem anterior, recomendando sólo si el otro alumno es un contacto (directo o indirecto).
-MATCH (a1:Alumno { legajo: 1493243 })-[:Conoce*]-(a2:Alumno), (a1)-[:Curso]-(m:Materia), (a2)-[:Curso]-(m), (a2)-[:Curso]-(e:Materia { electiva: true })
+MATCH (a1:Alumno { legajo: 1493243 })-[:Conoce*]-(a2:Alumno), (a1)-[:Curso]->(m:Materia)<-[:Curso]-(a2), (a2)-[:Curso]->(e:Materia { electiva: true })
 WHERE NOT (a1)-[:Curso]-(e)
 RETURN DISTINCT e as `Electiva Recomendada`
 
 //9. Consulta adicional, decidida por el grupo.
 //Listado para recomendación de compañeros de grupo teniendo como criterio que hayan cursado mas de 5 materias juntos.
-MATCH (a1:Alumno)-[c1:Curso]-(m:Materia), (a2:Alumno)-[c2:Curso]-(m)
+MATCH (a1:Alumno)-[c1:Curso]->(m:Materia)<-[c2:Curso]-(a2:Alumno)
 WHERE c1.ano = c2.ano
 AND c1.cuatrimestre = c2.cuatrimestre
 AND c1.nroCurso = c2.nroCurso
